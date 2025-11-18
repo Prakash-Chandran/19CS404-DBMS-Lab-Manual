@@ -1,214 +1,350 @@
-# Experiment 3: DML Commands
-
-## DEVOLOPED BY:PRAKASH C
-## REGISTER NUMBER:212223240122
+# Experiment 4: Aggregate Functions, Group By and Having Clause
 
 ## AIM
-To study and implement DML (Data Manipulation Language) commands.
+To study and implement aggregate functions, GROUP BY, and HAVING clause with suitable examples.
 
 ## THEORY
 
-### 1. INSERT INTO
-Used to add records into a relation.
-These are three type of INSERT INTO queries which are as
-A)Inserting a single record
-**Syntax (Single Row):**
-```sql
-INSERT INTO table_name (field_1, field_2, ...) VALUES (value_1, value_2, ...);
-```
-**Syntax (Multiple Rows):**
-```sql
-INSERT INTO table_name (field_1, field_2, ...) VALUES
-(value_1, value_2, ...),
-(value_3, value_4, ...);
-```
-**Syntax (Insert from another table):**
-```sql
-INSERT INTO table_name SELECT * FROM other_table WHERE condition;
-```
-### 2. UPDATE
-Used to modify records in a relation.
-Syntax:
-```sql
-UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;
-```
-### 3. DELETE
-Used to delete records from a relation.
-**Syntax (All rows):**
-```sql
-DELETE FROM table_name;
-```
-**Syntax (Specific condition):**
-```sql
-DELETE FROM table_name WHERE condition;
-```
-### 4. SELECT
-Used to retrieve records from a table.
+### Aggregate Functions
+These perform calculations on a set of values and return a single value.
+
+- **MIN()** – Smallest value  
+- **MAX()** – Largest value  
+- **COUNT()** – Number of rows  
+- **SUM()** – Total of values  
+- **AVG()** – Average of values
+
 **Syntax:**
 ```sql
-SELECT column1, column2 FROM table_name WHERE condition;
+SELECT AGG_FUNC(column_name) FROM table_name WHERE condition;
 ```
-**Question 1**
-
-![image](https://github.com/user-attachments/assets/3fb5b196-fd57-4e9c-8d03-4e445dacb453)
-
-
+### GROUP BY
+Groups records with the same values in specified columns.
+**Syntax:**
 ```sql
-UPDATE products
-SET product_name = 'Grapefruit'
-WHERE product_id = 4;
+SELECT column_name, AGG_FUNC(column_name)
+FROM table_name
+GROUP BY column_name;
+```
+### HAVING
+Filters the grouped records based on aggregate conditions.
+**Syntax:**
+```sql
+SELECT column_name, AGG_FUNC(column_name)
+FROM table_name
+GROUP BY column_name
+HAVING condition;
+```
+
+**Question 1**
+--
+-- How many male and female doctors are there in each medical specialty?
+
+Sample table:Doctors Table
+For example:
+
+Result
+Specialty          Gender    TotalDoctors
+-----------------  --------  --------------
+Cardiology         Male      1
+Dermatology        Male      1
+Gastroenterology   Female    4
+Gastroenterology   Male      1
+Pediatrics         Female    1
+Pediatrics         Male      2
+```sql
+--select Specialty,Gender,count(*) as TotalDoctors
+from Doctors
+group by Specialty,Gender
+order by Specialty,Gender;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/450e752a-8c92-4174-94ef-f60a21dce154)
+![image](https://github.com/user-attachments/assets/ae1d7229-4085-4c29-8f73-88362a81eaa4)
 
 
 **Question 2**
+---
+-- Write the SQL query that achieves the grouping of data by city, calculates the total income for each city, and includes only those cities where the total income sum is greater than 200,000.
 
-![image](https://github.com/user-attachments/assets/58478acf-17ff-41bf-805b-a990e525e4a8)
+Sample table: employee
+For example:
 
+Result
+city        Income
+----------  ----------
+Alaska      450000
+Arizona     1000000
+California  5300000
+Florida     5350000
+Georgia     250000
+here
 
 ```sql
-UPDATE employees
-SET salary = salary * 2
-WHERE department_id = 20
-  AND job_id LIKE '%MAN';
+-- select city, sum(income) as Income from employee
+group by city having Income > 200000;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/cd7d0fc7-ea44-4d43-aae0-0d8f5c592dde)
+![image](https://github.com/user-attachments/assets/f8813709-bbe1-4c5c-9bd4-326159c3bb23)
+
 
 **Question 3**
+---
+-- Write the SQL query that achieves the grouping of data by occupation, calculates the minimum work hours for each occupation, and excludes occupations where the minimum work hour is not greater than 8.
 
-![image](https://github.com/user-attachments/assets/a5cc9cd3-1df5-443d-b76b-55953b47d747)
+Sample table: employee1
+
+
+
+For example:
+
+Result
+occupation  MIN(workhour)
+----------  -------------
+Business    10
+Doctor      15
+Engineer    12
+Teacher     9
 
 
 ```sql
-UPDATE SALES
-SET sell_price = sell_price + 3
-WHERE product_id IN (
-    SELECT product_id 
-    FROM PRODUCTS 
-    WHERE supplier_id = 4
-);
+-- select occupation,  AVG(workhour) from employee1
+group by occupation having AVG(workhour) between 10 and 12;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/4154d858-e973-4537-aa69-9f77dcad49e9)
-
+![image](https://github.com/user-attachments/assets/8f7a3725-509e-46fe-83d0-d03a321d1509)
 
 **Question 4**
+---
+-- Write the SQL query that achieves the grouping of data by occupation, calculates the average work hours for each occupation, and includes only those occupations where the average work hour falls between 10 and 12.
 
-![image](https://github.com/user-attachments/assets/aa005081-072e-4412-8adb-6f500afeb345)
+Sample table: employee1
 
 
+
+For example:
+
+Result
+occupation  AVG(workhour)
+----------  -------------
+Business    10.0
+Engineer    12.0
 ```sql
-UPDATE sales
-SET total_sell_price = quantity * sell_price
-WHERE product_id = 10;
+-- select occupation,  AVG(workhour) from employee1
+group by occupation having AVG(workhour) between 10 and 12;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/a8ddecbd-e86a-480f-b302-3c8e0bdec3a5)
+![image](https://github.com/user-attachments/assets/ac44350e-e9ac-4329-af5f-90e8d4b051d6)
 
 
 **Question 5**
+---
+-- Write a SQL query to find the average length of names for people living in Chennai?
 
-![image](https://github.com/user-attachments/assets/4851b1e3-8122-4449-85f2-a87cf346ca0a)
+Table: customer
+
+name        type
+----------  ----------
+id          INTEGER
+name        TEXT   
+city        TEXT
+email       TEXT
+phone       INTEGER
+For example:
+
+Result
+avg_name_length
+---------------
+10.0
 
 
 ```sql
-UPDATE employees
-SET email = 'Unavailable';
+-- select avg(length(name)) as avg_name_length from customer
+where city = 'Chennai';
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/61fe882b-be3b-4d18-9d74-055e18806cbe)
+![image](https://github.com/user-attachments/assets/405e9f2c-7a33-40cd-9750-f498c6c45f0e)
 
 
 **Question 6**
+---
+--Write a SQL query to find the minimum purchase amount.
 
-![image](https://github.com/user-attachments/assets/cf249de4-51d1-4571-b684-3cbcabf18f1e)
+Sample table: orders
+
+ord_no      purch_amt   ord_date    customer_id  salesman_id
+
+----------  ----------  ----------  -----------  -----------
+
+70001       150.5       2012-10-05  3005         5002
+
+70009       270.65      2012-09-10  3001         5005
+
+70002       65.26       2012-10-05  3002         5001
+
+ 
+
+For example:
+
+Result
+MINIMUM
+----------
+65.26
 
 
 ```sql
-DELETE FROM customer
-WHERE GRADE = 2;
+-- select min(purch_amt) as MINIMUM FROM orders
+order by MINIMUM ASC LIMIT 1;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/b3b16aa3-a2d2-4974-9955-ed1a57cd9156)
+![image](https://github.com/user-attachments/assets/82129e8a-582d-4b98-9958-5d65c7982e9e)
+
 
 **Question 7**
+---
+--Write a SQL query to find the shortest email address in the customer table?
 
-![image](https://github.com/user-attachments/assets/4065dd95-30d9-43f4-a790-ff72adce9e33)
+Table: customer
 
+name        type
+----------  ----------
+id          INTEGER
+name        TEXT   
+city        TEXT
+email       TEXT
+phone       INTEGER
+For example:
+
+Result
+name        email           min_email_length
+----------  --------------  ----------------
+Ravi Kumar  ravi@gmail.com  14
 
 ```sql
-DELETE FROM customer
-WHERE CUST_COUNTRY NOT IN ('India', 'USA');
+--select name,email, length(email) as min_email_length
+from customer
+order by length(email) asc
+limit 1;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/f4560ca2-1fbc-476d-b647-33d71db7d372)
+![image](https://github.com/user-attachments/assets/1713e691-de01-49fb-92fc-699eed4ac570)
 
 
 **Question 8**
+---
+-- Write a SQL query to find the Fruit with the lowest available quantity.
 
-![image](https://github.com/user-attachments/assets/7f7a74a1-870f-4a1f-8b31-df3bc457e045)
+Note: Inventory attribute contains amount of fruits
+
+Table: fruits
+
+name        type
+----------  ----------
+id          INTEGER
+name        TEXT
+unit        TEXT
+inventory   INTEGER
+price       REAL
+ 
+
+For example:
+
+Result
+fruit_name  lowest_quantity
+----------  ---------------
+Watermelon  15
 
 
 ```sql
-DELETE FROM customer
-WHERE GRADE >= 2;
+-- select name as fruit_name, inventory as lowest_quantity from fruits
+order by inventory asc limit 1;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/1e0da64d-81c1-4493-aed7-9e30ea6eef28)
+![image](https://github.com/user-attachments/assets/dc745da4-f1b4-4a1e-9e89-526ebc701ed4)
 
 
 **Question 9**
+---
+-- How many prescriptions were written in each frequency category (e.g., once daily, twice daily)?
 
-![image](https://github.com/user-attachments/assets/6582b276-3672-4426-b317-7549c9b32a9d)
+Sample tablePrescriptions Table
 
+
+
+For example:
+
+Result
+Frequency      TotalPrescriptions
+-------------  ------------------
+Every 3 weeks  1
+Every 6 hours  1
+Once           1
+Once daily     4
+Once daily at  1
+Pending        1
+Twice daily    1
 
 ```sql
-DELETE FROM Doctors
-WHERE specialization = 'Pediatrics'
-  AND first_name = 'Michael';
+--select Frequency,count(*) as TotalPrescriptions 
+from Prescriptions
+group by Frequency  
+order by Frequency ;
 ```
 
 **Output:**
+![image](https://github.com/user-attachments/assets/ccb2c14c-76a1-4fa1-b053-69db65a07ad9)
 
-![image](https://github.com/user-attachments/assets/2d9ca326-978a-42e2-a707-7b52de0a1324)
 
 **Question 10**
+---
+--Write a SQL query that counts the number of unique salespeople. Return number of salespeople.
 
-![image](https://github.com/user-attachments/assets/5cdc5453-a0c6-4290-b442-dffb772c27e9)
+Sample table: orders
 
+ord_no      purch_amt   ord_date    customer_id  salesman_id
+
+----------  ----------  ----------  -----------  -----------
+
+70001       150.5       2012-10-05  3005         5002
+
+70009       270.65      2012-09-10  3001         5005
+
+70002       65.26       2012-10-05  3002         5001
+
+ 
+
+For example:
+
+Result
+COUNT
+----------
+6
 
 ```sql
-DELETE FROM customer
-WHERE AGENT_CODE IN ('A003', 'A008');
+-- select count(distinct salesman_id) as COUNT
+from orders;
 ```
 
 **Output:**
 
-![image](https://github.com/user-attachments/assets/46f39bd1-21b8-4724-b47b-53099e272de6)
-
-## GRADE
-
-<img width="1367" height="78" alt="image" src="https://github.com/user-attachments/assets/a6857546-979c-47c5-8980-1f95e6345155" />
+![image](https://github.com/user-attachments/assets/96f0dce0-25a8-4f91-bd89-2376a34a4011)
 
 
 
 ## RESULT
-Thus, the SQL queries to implement DML commands have been executed successfully.
+Thus, the SQL queries to implement aggregate functions, GROUP BY, and HAVING clause have been executed successfully.
