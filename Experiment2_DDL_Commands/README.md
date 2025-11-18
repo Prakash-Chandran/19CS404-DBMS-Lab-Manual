@@ -5,8 +5,8 @@ To study and implement DDL commands and different types of constraints.
 
 ## THEORY
 
-## devoloped by:MARXIN LIJO M
-## REGISTER NUMBER:212223240085
+## devoloped by:PRAKASH C
+## REGISTER NUMBER:212223240122
 
 ### 1. CREATE
 Used to create a new relation (table).
